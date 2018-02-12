@@ -23,9 +23,9 @@ public class Components {
 		return label;
 	}
 
-	public JTextField getTextField(int bound1, int bound2, int bound3, int bound4,String defaultString) {
+	public JTextField getTextField(int bound1, int bound2, int bound3, int bound4) {
 		// Defining ID field
-		textField = new JTextField(defaultString);
+		textField = new JTextField();
 		textField.setBounds(bound1, bound2, 210, bound4);
 		textField.setBorder(addBorders());
 		textField.setFont(getFont(14));

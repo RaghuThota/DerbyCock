@@ -11,85 +11,62 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.DefaultCellEditor;
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableColumn;
 
 import com.bean.Fights;
 import com.bean.Players;
 import com.project.derby.components.Components;
 
-public class OpponentMappingUI extends JFrame {
+public class PlayersMappingUI extends JFrame {
 
 	private Container contentPane;
 	private JTable jtable;
 	private static int fightID = 1;
-	private JButton button = new JButton("Submit");
 	private DefaultTableModel tableModel;;
-	private String[] columns = { "FIGHTID", "PLAYER 1", "PLAYER1_ENTRY", "PLAYER 2", "PLAYER2_ENTRY", "WON BY" };
+	private String[] columns = { "ID", "Player", "Player Entries"};
 	Components components = new Components();
-	private JLabel msgLabel = components.getLabel("No Pairs Found", 60 + 40, 7, 200, 30);
 
-	public OpponentMappingUI() {
+	public PlayersMappingUI() {
 		contentPane = getContentPane();
 		contentPane.setLayout(null);
 		addListeners();
 	}
 
 	public void initializeJTable(List<Players> lis) {
-		OpponentMappingUI omiu = new OpponentMappingUI();
-		omiu.setTitle("::::-Fights Form-::::");
-		JLabel roundLabel = components.getLabel("Register new person", 60 + 40, 7, 200, 30);
+		PlayersMappingUI omiu = new PlayersMappingUI();
+		omiu.setTitle("::::Registered Players::::");
+		JLabel roundLabel = components.getLabel("Registered Players", 60 + 40, 7, 200, 30);
 		omiu.setSize(800, 600);
 		omiu.setVisible(true);
 		omiu.initiateAndAddJTable(lis);
 		omiu.add(roundLabel);
-		// omiu.setDefaultCloseOperation(omiu.DISPOSE_ON_CLOSE);
 	}
 
-	private void initiateAndAddJTable(List<Players> opponentsList) {
-		button.setBounds(280, 520, 100, 30);
-		contentPane.add(button);
+	private void initiateAndAddJTable(List<Players> playersList) {
 		tableModel = new DefaultTableModel(columns, 0);
 		jtable = new JTable(tableModel);
 		jtable.setRowHeight(30);
 		int i = 0;
-		while (i < opponentsList.size() - 1) {
-			if(opponentsList.size() != 0) {
-			tableModel.addRow(getRowElementsFromObject(opponentsList.get(i), opponentsList.get(i + 1)));
+		while (i < playersList.size() - 1) {
+			tableModel.addRow(getRowElementsFromObject(playersList.get(i)));
 			i = i + 2;
-			} else {
-				jtable.add(msgLabel);
-			}
 		}
-
-		TableColumn sportColumn = jtable.getColumnModel().getColumn(5);
-			JComboBox comboBox = new JComboBox();
-			comboBox.addItem( "PLAYER1 WON");
-			comboBox.addItem("PLAYER2 WON");
-			comboBox.addItem("FIGHT DRAWN");
-			comboBox.addItem("ABANDONED");
-			sportColumn.setCellEditor(new DefaultCellEditor(comboBox));
 		JScrollPane sp = new JScrollPane(jtable);
 		sp.setBorder(Components.addBorders());
 		sp.setBounds(10, 10, 700, 500);
 		contentPane.add(sp);
 	}
 
-	private Object[] getRowElementsFromObject(Players player1, Players player2) {
+	private Object[] getRowElementsFromObject(Players player) {
 		Object o[] = new Object[5];
 		o[0] = fightID++;
-		o[1] = player1.getName();
-		o[2] = player1.getEntry().getEntryId().concat("_").concat(String.valueOf(player1.getEntry().getDerbyWeight()));
-		o[3] = player2.getName();
-		o[4] = player2.getEntry().getEntryId().concat("_").concat(String.valueOf(player2.getEntry().getDerbyWeight()));
+		o[1] = player.getName();
+		o[2] = player.getEntry().getEntryId();
 		return o;
 	}
 
@@ -106,17 +83,6 @@ public class OpponentMappingUI extends JFrame {
 			public void mouseClicked(MouseEvent me) {
 				System.out.println("X " + me.getX());
 				System.out.println("Y " + me.getY());
-			}
-		});
-		button.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				try {
-					insertOpponentsToDB();
-				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
 			}
 		});
 	}

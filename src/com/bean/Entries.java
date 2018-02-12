@@ -11,6 +11,12 @@ public class Entries {
 	private List<Double> derbyWeightList;
 	private short activeInd;
 
+	@Override
+	public String toString() {
+		return "Entries [ palyerId=" + palyerId + ", entryId=" + entryId
+				+ ", derbyWeight=" + derbyWeight + "]";
+	}
+
 	public int getId() {
 		return id;
 	}
